@@ -1,0 +1,58 @@
+To do
+FIX THE SWORD SWING AFTER MTN DEW FOUNTAIN
+Items, Status's such as poison or bleed
+Loading game
+Saving game
+Level transitioning
+Better Level loading (including entities)
+Projectile system -> magic system --Need to make projectiles first. will be used in magic--
+Mouse implementation --allow for aiming of projectiles, will start with dumb fire based on the direction the player or entitiy is moving so mobs can use it too--
+Mini-games that have their own rewards or punishments have other stats affected.
+
+UP THE AMOUNT OF FRAMES POSSIBLE for animations to 32 images per animation cycle
+
+
+
+--In-progress--
+
+FUCKING MAGIC - GOD I HATE MY LIFE... WHY DID I WANT THIS... ITS SO CLOSE BUT SO UNOPTIMIZED ...
+
+--DONE--
+Death, damage, and attack sounds
+Character stats
+Death animations
+Health bars of mobs
+Friend Items
+Death logic
+Proximity to player health bars
+Damage Behavior logic -- will be different for each monster
+
+
+
+Bosses
+--Ideas--
+Mikey's - Synergies between items and classes. Berserker class + great sword at a certain level and a max tier weapon %5 chance to kill
+
+--Requested Features--
+Ability to have pets - specifically they asked for wolves
+
+--Requested ITEMS--
+Kamryn - Great axe -
+Regular attack
+Special attack - Channeled whirlwind(spin around)
+Mikey - getsuga tenshou - Great Sword - flame effects
+at max tier - basic - would be ranged like ichigos getsuga tenshou
+at max tier - special - Fire shoots down onto the character and spreads out around you and does damage - think of water when you turn on the sink(cost's 10% of your max health and does damage based on that)
+
+Trinity - Trinity's dagger
+Parrying Dagger: Block an attack if input the direction right before the attack connects
+Give monsters an window an in counter that is played during their attack animation. if the attack is within the window for the item parry the attack
+
+Zoosky -
+
+Dalton - sword bow
+Bow that shoots swords, scales off of strength;
+
+Aaron - Lucky Tornado - Reference to his league name - may need to seperate out movement direction and cast direction.
+Tornado spell: spins character wildly(animation, not movement) and casts in random direction
+
