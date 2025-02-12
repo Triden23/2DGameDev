@@ -53,17 +53,17 @@ public class FireBall extends Spell{
         projectileSprite = new BufferedImage[2];
         effectSprite = new BufferedImage[2];
 
-        System.out.println(updatedStats.projectileSizeX);
-        projectileSprite[0] = uTool.setup("/attacks/flamecircle_1",updatedStats.projectileSizeX,updatedStats.projectileSizeY);
-        projectileSprite[1] = uTool.setup("/attacks/flamecircle_2",updatedStats.projectileSizeX,updatedStats.projectileSizeY);
+        System.out.println(baseStats.projectileSizeX);
+        projectileSprite[0] = uTool.setup("/attacks/flamecircle_1",baseStats.projectileSizeX,baseStats.projectileSizeY);
+        projectileSprite[1] = uTool.setup("/attacks/flamecircle_2",baseStats.projectileSizeX,baseStats.projectileSizeY);
         
-        effectSprite[0] = uTool.setup("/attacks/flamecircle_4",updatedStats.effectSizeX,updatedStats.effectSizeY);
-        effectSprite[1] = uTool.setup("/attacks/flameCircle_5",updatedStats.effectSizeX,updatedStats.effectSizeY);
+        effectSprite[0] = uTool.setup("/attacks/flamecircle_4",baseStats.effectSizeX,baseStats.effectSizeY);
+        effectSprite[1] = uTool.setup("/attacks/flameCircle_5",baseStats.effectSizeX,baseStats.effectSizeY);
     }
 
     public void projectileLogic(){
         travelPathStraight();
-        if(projectileFrameCounter == updatedStats.range){
+        if(projectileFrameCounter == baseStats.range){
             trigger = true;
         }
     }
