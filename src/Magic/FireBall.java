@@ -80,7 +80,7 @@ public class FireBall extends Spell{
     }
     //There are 3 types - circle, cone, horizontal
     public void spawnChildren(){
-        childrenCoord = getChildCoords("circle",childrenAmount,updatedStats.range/2);
+        childrenCoord = getChildCoords("circle",childrenAmount,baseStats.range/2);
         for(int i = 0; i < childrenAmount; i++){
             child = new ChildFireBall(gp, caster, childrenCoord[i]);
             gp.spellM.addSpell(child);
