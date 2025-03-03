@@ -43,7 +43,7 @@ public class Entity {
     public boolean alive = true;
     public boolean dying = false;
     boolean hpBarOn = false;
-
+    boolean contactPlayer;
 
     //COUNTERS
     public int spriteCounter = 0;
@@ -117,10 +117,6 @@ public class Entity {
 
         collisionOn = false;
         gp.cChecker.checkTile(this);
-        gp.cChecker.checkObject(this,false);
-        gp.cChecker.checkEntity(this, gp.npc);
-        gp.cChecker.checkEntity(this, gp.monster);
-        boolean contactPlayer = gp.cChecker.checkPlayer(this);
 
         if(this.type == 2 && contactPlayer){
             if(!gp.player.invincible){
@@ -166,6 +162,14 @@ public class Entity {
                 invincibleCounter = 0;
             }
         }
+    }
+
+    public void checkCollision(){
+        collisionOn = false;
+        gp.cChecker.checkObject(this,false);
+        gp.cChecker.checkEntity(this, gp.npc);
+        gp.cChecker.checkEntity(this, gp.monster);
+        contactPlayer = gp.cChecker.checkPlayer(this);
     }
     public void draw(Graphics2D g2){
         BufferedImage image = null;

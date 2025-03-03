@@ -17,6 +17,11 @@ UP THE AMOUNT OF FRAMES POSSIBLE for animations to 32 images per animation cycle
 
 FUCKING MAGIC - GOD I HATE MY LIFE... WHY DID I WANT THIS... ITS SO CLOSE BUT SO UNOPTIMIZED ...
 
+optimization ideas. Divide the world into a grid, kinda exists with gp.tileSize().
+maybe a 5x5 chunk have collision checker update only if the entites are in the chunk
+Detect if they are in it.
+Precache
+
 --DONE--
 Death, damage, and attack sounds
 Character stats

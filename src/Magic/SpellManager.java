@@ -14,10 +14,15 @@ public class SpellManager {
     int randomPointDistanceMax = 30;
     Random rand;
 
+    int randomTrackingCounter = 120;
+    int randomTrackingLimit = 120;
 
     GamePanel gp;
+
+    ArrayList<Entity> currentEntities;
     public SpellManager(GamePanel gp){
         this.gp = gp;
+        rand = new Random();
     }
 
 
@@ -58,6 +63,7 @@ public class SpellManager {
     //---------------------------------------------------------------------------------------------------------------
 
     public void update(){//update spells, then check for collision -> applyDamage
+        currentEntities = gp.getCurrentEntities();
         for(int i = 0; i < spells.size(); i++){
             if(spells.get(i)!=null){
                 if(spells.get(i).done){
@@ -71,26 +77,43 @@ public class SpellManager {
                 }
             }
         }
+        currentEntities.clear();
     }
 
     public void checkForCollision(){
         ArrayList<Integer> entitiesHit = new ArrayList<>();
+
         for(int i = 0; i < spells.size(); i++){
+
             if(gp.cChecker.checkSpellPlayer(spells.get(i))){
+
                 hit(999,i,true);//The only instance we pass true is if the player was hit
+
             }
+
             entitiesHit = gp.cChecker.checkSpellEntity(spells.get(i),gp.monster);
+
             if(!entitiesHit.isEmpty()){
+
                 for(int index = 0; index < entitiesHit.size(); index++){
+
                     if(entitiesHit.get(index) == 999){
+
                         //Do nothing
                     }else if(!spells.get(i).hittags.contains(gp.monster[entitiesHit.get(index)].tag)) {
+
                         hit(i, entitiesHit.get(index), false);
+
                         //Add the entity's tag to an array list stored in the spell so it wont hit the same target more than once
+
                         spells.get(i).hittags.add(gp.monster[entitiesHit.get(index)].tag);
+
                     }else{
+
                         if(gp.monster[entitiesHit.get(index)] != null){
+
                             System.out.println(gp.monster[entitiesHit.get(index)].tag);
+
                         }
                     }
                 }
@@ -133,13 +156,19 @@ public class SpellManager {
 
     //used to update the targetX and targetY of a spells coord if it is a homing spell
     public void homingUpdate(int index){
+        Coord coord;
         //set a tag if its null then update tracking
-        if(spells.get(index).coord.tag == null){
+        if(spells.get(index).coord.tag == null || spells.get(index).coord.tag.equals("999")){
             Coord newTarget = findNearestEntity(spells.get(index));
             spells.get(index).updateTracking(newTarget);
         }
-        Coord coord = trackByTag(spells.get(index));
-        spells.get(index).updateTracking(coord);
+        if(!spells.get(index).coord.tag.equals("999")){
+            coord = trackByTag(spells.get(index));
+        }else{
+            coord = generateRandomPoint(spells.get(index));
+        }
+
+        spells.get(index).coord = coord;
     }
 
     //---------------------------------------------------------------------------------------------------------------
@@ -177,7 +206,7 @@ public class SpellManager {
     //---------------------------------------------------------------------------------------------------------------
 
     //used by some spells for tacking
-    public Coord trackByTag(Spell spell){//used to track entities for spells and maybe can be used to set a lock so it will target the entity closest to mouse as well
+    public Coord trackByTag(Spell spell){//used to track entities for spells and maybe can be used to set a lock, so it will target the entity closest to mouse as well
         Coord c;
         Entity e = getByTagEntities(spell.coord.tag);
         c = spell.coord;
@@ -195,34 +224,34 @@ public class SpellManager {
     public Coord findNearestEntity(Spell spell){
         Coord c;
         c = spell.coord;
-        c.tag = getClosestEntityTag(spell.coord);
+        c.tag = getClosestEntityTag(spell.coord, spell);
         return c;
     }
 
-    public String getClosestEntityTag(Coord coord) {
+    public String getClosestEntityTag(Coord coord,Spell spell) {
         Entity closestEntity = null;
         double closestDistance = Double.MAX_VALUE;
-
-        ArrayList<Entity> currentEntities = gp.getCurrentEntities();
 
         for (Entity entity : currentEntities) {
             int dx = coord.x - entity.worldX;
             int dy = coord.y - entity.worldY;
             double distance = Math.sqrt(dx * dx + dy * dy); // Euclidean Distance
-
-            if (distance < closestDistance) {
-                closestDistance = distance;
-                closestEntity = entity;
+            if(!entity.tag.equals(spell.caster.tag)){
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestEntity = entity;
+                }
             }
         }
         currentEntities.clear();
-
+        if(closestEntity == null){
+            return "999";
+        }
         return closestEntity.tag;
     }
 
     public Entity getByTagEntities(String tag){
         Entity entity = null;
-        ArrayList<Entity> currentEntities = gp.getCurrentEntities();
         for (Entity list : currentEntities){
             if(list.tag.equals(tag)){
                 return list;
@@ -237,8 +266,6 @@ public class SpellManager {
         Entity closestEntity = null;
         double closestDistance = Double.MAX_VALUE;
 
-        ArrayList<Entity> currentEntities = gp.getCurrentEntities();
-
         for (Entity entity : currentEntities) {
             int dx = coord.x - entity.worldX;
             int dy = coord.y - entity.worldY;
@@ -252,6 +279,32 @@ public class SpellManager {
         currentEntities.clear();
 
         return closestEntity;
+    }
+
+    public Coord generateRandomPoint(Spell spell){
+        int x = 0;
+        int y = 0;
+        x = spell.coord.x; // 1-100 range
+        y = spell.coord.y; //1-100 range
+        if(randomTrackingCounter == randomTrackingLimit){
+
+            if(x%2==0){
+                x += rand.nextInt((500-300))+300;
+            }else{
+                x -= rand.nextInt((500-300))+300;
+            }
+            System.out.println("current target x: " + spell.coord.targetX + " new target x: " + x);
+            if(y%2==0){
+                y -= rand.nextInt((500-300))+300;
+            }else{
+                y += rand.nextInt((500-300))+300;
+            }
+            System.out.println("current target y: " + spell.coord.targetY + " new target y: " + x);
+            System.out.println(y);
+            randomTrackingCounter = 0;
+        }
+        randomTrackingCounter++;
+        return new Coord(spell.coord.x,spell.coord.y,x,y);
     }
 
     //used to get the players coords(used in monster homing spells)

@@ -66,7 +66,7 @@ public class ChildFireBall extends Spell{
     }
 
     public void effectLogic(){
-        if(effectFrameCounter >= 120){
+        if(effectFrameCounter >= 20){
             //do things/spawn children
             done = true;
         }else{

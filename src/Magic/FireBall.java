@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 public class FireBall extends Spell{
     Spell child;
 
-    int childrenAmount = 5;
+    int childrenAmount = 40;
     public FireBall(GamePanel gp, Entity caster){
         super(gp,false, caster);
         spiralProgress = 0;
@@ -27,7 +27,7 @@ public class FireBall extends Spell{
         projectileHitBoxType = "rectangle";
         effectSpriteIncrement = 60;//Variable in charge of cycleing effect code
         projectileSpriteIncrement = 30;
-
+        isHoming = true;
         //Stats
         baseStats.scalingType = "intelligence";
         baseStats.percentOfStat = 30.00f;
@@ -41,8 +41,6 @@ public class FireBall extends Spell{
 
         baseStats.projectileSizeX = 30;
         baseStats.projectileSizeY = 30;
-
-
 
         baseStats.effectSizeX = 80;
         baseStats.effectSizeY = 80;
@@ -69,7 +67,7 @@ public class FireBall extends Spell{
     }
 
     public void effectLogic(){
-        if(effectFrameCounter >= 120){
+        if(effectFrameCounter >= 60){
             //do things/spawn children
             spawnChildren();
             done = true;
