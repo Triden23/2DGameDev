@@ -14,6 +14,7 @@ public class Asset {
     int width,height;
     BufferedImage image;
     private final Set<String> scene = new HashSet<>();
+    Boolean loaded = false;
 
     public Asset(String path, int width, int height, String... scene){
 
@@ -27,6 +28,7 @@ public class Asset {
         try{
             image = ImageIO.read(getClass().getResourceAsStream(path + ".png"));
             image = scaleImage(image, width, height);
+            loaded = true;
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -34,6 +36,7 @@ public class Asset {
 
     public void clearImage() {
         image = null; // Allow garbage collection to free memory
+        loaded = false;
     }
 
     public BufferedImage scaleImage(BufferedImage original, int width, int height){
@@ -57,10 +60,11 @@ public class Asset {
         return scaledImage;
     }
 
+    //Used in things like spells that can be equiped or unequiped
     public void addScene(String scene){
         this.scene.add(scene);
     }
-
+    //Used in spells, that can be equiped and unequiped
     public void removeScene(String scene){
         this.scene.remove(scene);
     }

@@ -36,14 +36,14 @@ public class MON_BlueSlime extends Entity {
     }
 
     public void getImage() {
-        up1 = setup("/monster/blueslime_down_1",gp.tileSize, gp.tileSize);
-        up2 = setup("/monster/blueslime_down_2",gp.tileSize, gp.tileSize);
-        down1 = setup("/monster/blueslime_down_1",gp.tileSize, gp.tileSize);
-        down2 = setup("/monster/blueslime_down_2",gp.tileSize, gp.tileSize);
-        left1 = setup("/monster/blueslime_down_1",gp.tileSize, gp.tileSize);
-        left2 = setup("/monster/blueslime_down_2",gp.tileSize, gp.tileSize);
-        right1 = setup("/monster/blueslime_down_1",gp.tileSize, gp.tileSize);
-        right2 = setup("/monster/blueslime_down_2",gp.tileSize, gp.tileSize);
+        up1 = gp.assetM.getAsset("MON_BlueSlimeUp1");
+        up2 = gp.assetM.getAsset("MON_BlueSlimeUp2");
+        down1 = gp.assetM.getAsset("MON_BlueSlimeUp1");
+        down2 = gp.assetM.getAsset("MON_BlueSlimeUp2");
+        left1 = gp.assetM.getAsset("MON_BlueSlimeUp1");
+        left2 = gp.assetM.getAsset("MON_BlueSlimeUp2");
+        right1 = gp.assetM.getAsset("MON_BlueSlimeUp1");
+        right2 = gp.assetM.getAsset("MON_BlueSlimeUp2");
     }
 
     //Behavior

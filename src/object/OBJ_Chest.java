@@ -10,9 +10,12 @@ public class OBJ_Chest extends Entity {
 
     public OBJ_Chest(GamePanel gp) {
         super(gp);
-
         name = "Chest";
-        down1 = setup("/objects/Chest",gp.tileSize, gp.tileSize);
+        down1 = gp.assetM.getAsset("OBJ_Chest");
+    }
+
+    public void markDone(){
+        isDone = true;
     }
 
 }

@@ -15,14 +15,16 @@ public class OBJ_Heart extends Entity {
 
         name = "Heart";
 
+        image =  gp.assetM.getAsset("OBJ_FullHeart");
+        image2 = gp.assetM.getAsset("OBJ_QuarterMissingHeart");
+        image3 = gp.assetM.getAsset("OBJ_HalfHeart");
+        image4 = gp.assetM.getAsset("OBJ_QuarterHeart");
+        image5 = gp.assetM.getAsset("OBJ_EmptyHeart");
 
-        image = setup("/objects/full_heart",gp.tileSize, gp.tileSize);
-        image2 = setup("/objects/quarter_missing_heart",gp.tileSize, gp.tileSize);
-        image3 = setup("/objects/half_heart",gp.tileSize, gp.tileSize);
-        image4 = setup("/objects/quarter_heart",gp.tileSize, gp.tileSize);
-        image5 = setup("/objects/empty_heart",gp.tileSize, gp.tileSize);
+    }
 
-
+    public void markDone(){
+        isDone = true;
     }
 
 

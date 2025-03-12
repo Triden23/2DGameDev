@@ -94,8 +94,7 @@ public class Player extends Entity{
 
     public void setDefaultValues(){
         spells = new Spell[2];//Default value is 2 for player as there will only be 2 spells, maybe right click will be coded as spell and so will left click.
-        worldX = gp.tileSize * 23;
-        worldY = gp.tileSize * 21;
+        location = gp.objectP.getTransform(gp.tileSize * 23,gp.tileSize * 21);
         speed = 4;
         direction = "down";
         tag = "Player";
@@ -144,7 +143,8 @@ public class Player extends Entity{
     }
 
     public void update(){
-
+        worldX = location.getWorldX();
+        worldY = location.getWorldY();
         if(attacking){
             attacking();
         }
@@ -188,10 +188,10 @@ public class Player extends Entity{
             if(!collisionOn && !keyH.enterPressed){
 
                 switch(direction){
-                    case "up":      worldY -= speed;    break;
-                    case "down":    worldY += speed;    break;
-                    case "left":   worldX -= speed;    break;
-                    case "right":   worldX += speed;    break;
+                    case "up":      location.minusWorldY(speed);    break;
+                    case "down":    location.addWorldY(speed);    break;
+                    case "left":   location.minusWorldX(speed);    break;
+                    case "right":   location.addWorldX(speed);    break;
                 }
 
             }
@@ -270,7 +270,7 @@ public class Player extends Entity{
     public void castSpell(int index){
         spells[index].casting = true;
         int[] target = getTarget(index);
-        spells[index].coord.setCoord(worldX,worldY,target[0],target[1]);
+        spells[index].coord.setCoord(location.getWorldX(),location.getWorldY(),target[0],target[1]);
         //System.out.println("" + worldX + " " + worldY + " " + target[0] + " " + target[1]);
         //System.out.println("" + spells[index].coord.x + " " + spells[index].coord.y + " " + spells[index].coord.targetX + " " + spells[index].coord.targetY);
         gp.spellM.addSpell(spells[index]);
@@ -281,20 +281,20 @@ public class Player extends Entity{
     public int[] getTarget(int index){
         int[] target = new int[2];
         if(direction.equals("up")){
-            target[0] = worldX;
-            target[1] = worldY-(spells[index].baseStats.range);
+            target[0] = location.getWorldX();
+            target[1] = location.getWorldY()-(spells[index].baseStats.range);
         }
         if(direction.equals("down")){
-            target[0] = worldX;
+            target[0] = location.getWorldX();
             target[1] = worldY+(spells[index].baseStats.range);
         }
         if(direction.equals("left")){
-            target[0] = worldX-(spells[index].baseStats.range);
-            target[1] = worldY;
+            target[0] = location.getWorldX()-(spells[index].baseStats.range);
+            target[1] = location.getWorldY();
         }
         if(direction.equals("right")){
-            target[0] = worldX+(spells[index].baseStats.range);
-            target[1] = worldY;
+            target[0] = location.getWorldX()+(spells[index].baseStats.range);
+            target[1] = location.getWorldY();
         }
         return target;
     }
@@ -310,17 +310,17 @@ public class Player extends Entity{
             spriteNum = 2;
 
             //Save the current worldX, worldY, solidArea
-            int currentWorldX = worldX;
-            int currentWorldY = worldY;
+            int currentWorldX = location.getWorldX();
+            int currentWorldY = location.getWorldY();
             int solidAreaWidth = solidArea.width;
             int solidAreaHeight = solidArea.height;
 
             //Adjust the player's worldX worldY for the attackArea
             switch(direction) {
-                case "up": worldY -= attackArea.height; break;
-                case "down": worldY += attackArea.height; break;
-                case "left": worldX -= attackArea.width; break;
-                case "right": worldX += attackArea.width; break;
+                case "up": location.minusWorldY(attackArea.height); break;
+                case "down": location.addWorldY(attackArea.height); break;
+                case "left": location.minusWorldX(attackArea.width); break;
+                case "right": location.addWorldX(attackArea.width); break;
             }
 
             //attackArea becomes solidArea
@@ -331,8 +331,8 @@ public class Player extends Entity{
             //SPELL UPDATE - ADDED INT AMOUNT
             damageMonster(monsterIndex);
             //After checking collision, resolve the original data
-            worldX = currentWorldX;
-            worldY = currentWorldY;
+            location.setWorldX(currentWorldX);
+            location.setWorldY(currentWorldY);
             solidArea.width = solidAreaWidth;
             solidArea.height = solidAreaHeight;
 
@@ -346,27 +346,25 @@ public class Player extends Entity{
     }
 
     public void getPlayerImage() {
-
-        up1 =       setup("/player/boy_up_1", gp.tileSize, gp.tileSize);
-        up2 =       setup("/player/boy_up_2", gp.tileSize, gp.tileSize);
-        down1 =     setup("/player/boy_down_1", gp.tileSize, gp.tileSize);
-        down2 =     setup("/player/boy_down_2", gp.tileSize, gp.tileSize);
-        left1 =     setup("/player/boy_left_1", gp.tileSize, gp.tileSize);
-        left2 =     setup("/player/boy_left_2", gp.tileSize, gp.tileSize);
-        right1 =    setup("/player/boy_right_1", gp.tileSize, gp.tileSize);
-        right2 =    setup("/player/boy_right_2", gp.tileSize, gp.tileSize);
-
+        up1 =   gp.assetM.getAsset("PlayerUp1");
+        up2 =   gp.assetM.getAsset("PlayerUp2");
+        down1 = gp.assetM.getAsset("PlayerDown1");
+        down2 = gp.assetM.getAsset("PlayerDown2");
+        left1 = gp.assetM.getAsset("PlayerLeft1");
+        left2 = gp.assetM.getAsset("PlayerLeft2");
+        right1 =gp.assetM.getAsset("PlayerRight1");
+        right2 =gp.assetM.getAsset("PlayerRight2");
     }
 
     public void getPlayerAttackImages() {
-        attackUp1 =     setup("/player/boy_attack_up_1",gp.tileSize,gp.tileSize*2);
-        attackUp2 =     setup("/player/boy_attack_up_2",gp.tileSize,gp.tileSize*2);
-        attackDown1 =   setup("/player/boy_attack_down_1",gp.tileSize,gp.tileSize*2);
-        attackDown2 =   setup("/player/boy_attack_Down_2",gp.tileSize,gp.tileSize*2);
-        attackLeft1 =   setup("/player/boy_attack_left_1",gp.tileSize*2,gp.tileSize);
-        attackLeft2 =   setup("/player/boy_attack_left_2",gp.tileSize*2,gp.tileSize);
-        attackRight1 =  setup("/player/boy_attack_right_1",gp.tileSize*2,gp.tileSize);
-        attackRight2 =  setup("/player/boy_attack_right_2",gp.tileSize*2,gp.tileSize);
+        attackUp1 =     gp.assetM.getAsset("PlayerAttackUp1");
+        attackUp2 =     gp.assetM.getAsset("PlayerAttackUp2");
+        attackDown1 =   gp.assetM.getAsset("PlayerAttackDown1");
+        attackDown2 =   gp.assetM.getAsset("PlayerAttackDown2");
+        attackLeft1 =   gp.assetM.getAsset("PlayerAttackLeft1");
+        attackLeft2 =   gp.assetM.getAsset("PlayerAttackLeft2");
+        attackRight1 =  gp.assetM.getAsset("PlayerAttackRight1");
+        attackRight2 =  gp.assetM.getAsset("PlayerAttackRight2");
     }
 
     public void pickUpObject(int i){

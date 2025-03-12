@@ -3,9 +3,11 @@ package entity;
 import Magic.Enhancements;
 import Magic.Spell;
 import main.GamePanel;
-import main.UtilityTool;
+
 
 import tools.Circle;
+import tools.Transform;
+import tools.Utility;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -22,6 +24,12 @@ public class Entity {
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collision = false;
     String dialogues[] = new String[20];
+
+    public boolean isDone;
+
+
+    //Pooled Objects
+    public Transform location;
 
     //HitBoxes
 
@@ -44,6 +52,7 @@ public class Entity {
     public boolean dying = false;
     boolean hpBarOn = false;
     boolean contactPlayer;
+
 
     //COUNTERS
     public int spriteCounter = 0;
@@ -89,6 +98,13 @@ public class Entity {
 
     public Entity(GamePanel gp){
         this.gp = gp;
+        isDone = false;
+    }
+
+    public void requestTransform(int x,int y){
+        location = gp.objectP.getTransform(x,y);
+        worldX = location.getWorldX();
+        worldY = location.getWorldY();
     }
 
     //behavior for npc
@@ -112,54 +128,63 @@ public class Entity {
 
     }
     public void update(){
+        if(!isDone){
+            worldX = location.getWorldX();
+            worldY = location.getWorldY();
+            setAction();
 
-        setAction();
+            collisionOn = false;
+            gp.cChecker.checkTile(this);
 
-        collisionOn = false;
-        gp.cChecker.checkTile(this);
+            if(this.type == 2 && contactPlayer){
+                if(!gp.player.invincible){
+                    int damage = attack - gp.player.defense;
 
-        if(this.type == 2 && contactPlayer){
-            if(!gp.player.invincible){
-                int damage = attack - gp.player.defense;
+                    if(damage < 0) {
+                        damage = 0;
+                    }
 
-                if(damage < 0) {
-                    damage = 0;
+                    gp.player.life -= damage;
+                    gp.player.invincible = true;
                 }
-
-                gp.player.life -= damage;
-                gp.player.invincible = true;
             }
-        }
 
-        if(!collisionOn){
+            if(!collisionOn){
 
-            switch(direction){
+                switch(direction){
+                /*
                 case "up":      worldY -= speed;    break;
                 case "down":    worldY += speed;    break;
                 case "left":    worldX -= speed;    break;
                 case "right":   worldX += speed;    break;
+                */
+                    case "up":      location.minusWorldY(speed);    break;
+                    case "down":    location.addWorldY(speed);    break;
+                    case "left":    location.minusWorldX(speed);    break;
+                    case "right":   location.addWorldX(speed);    break;
+                }
+
             }
 
-        }
 
 
-
-        //Simple, Dirty animation changer (redo later)
-        spriteCounter++;
-        if(spriteCounter > 12){
-            if(spriteNum == 1){
-                spriteNum = 2;
-            } else if(spriteNum == 2) {
-                spriteNum = 1;
+            //Simple, Dirty animation changer (redo later)
+            spriteCounter++;
+            if(spriteCounter > 12){
+                if(spriteNum == 1){
+                    spriteNum = 2;
+                } else if(spriteNum == 2) {
+                    spriteNum = 1;
+                }
+                spriteCounter = 0;
             }
-            spriteCounter = 0;
-        }
 
-        if(invincible){
-            invincibleCounter++;
-            if(invincibleCounter > invincibleTimer){
-                invincible = false;
-                invincibleCounter = 0;
+            if(invincible){
+                invincibleCounter++;
+                if(invincibleCounter > invincibleTimer){
+                    invincible = false;
+                    invincibleCounter = 0;
+                }
             }
         }
     }
@@ -172,8 +197,11 @@ public class Entity {
         contactPlayer = gp.cChecker.checkPlayer(this);
     }
     public void draw(Graphics2D g2){
-        BufferedImage image = null;
+        if(!isDone){
+            BufferedImage image = null;
 
+
+        /*
         int screenX = worldX - gp.player.worldX + gp.player.screenX;
         int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
@@ -182,72 +210,77 @@ public class Entity {
                 worldX - gp.tileSize< gp.player.worldX + gp.player.screenX &&
                 worldY + gp.tileSize> gp.player.worldY - gp.player.screenY &&
                 worldY - gp.tileSize< gp.player.worldY + gp.player.screenY) {
+         */
+            int screenX = location.getWorldX() - gp.player.location.getWorldX() + gp.player.screenX;
+            int screenY = location.getWorldY() - gp.player.location.getWorldY() + gp.player.screenY;
 
-            switch (direction) {
-                case "up":
-                    if(spriteNum == 1)  {   image = up1;    }
-                    if(spriteNum == 2)  {   image = up2;    }
-                    break;
-                case "down":
-                    if(spriteNum == 1)  {   image = down1;  }
-                    if(spriteNum == 2)  {   image = down2;  }
-                    break;
-                case "left":
-                    if(spriteNum == 1)  {   image = left1;  }
-                    if(spriteNum == 2)  {   image = left2;  }
-                    break;
-                case "right":
-                    if(spriteNum == 1)  {   image = right1; }
-                    if(spriteNum == 2)  {   image = right2; }
-                    break;
-            }
+            //this if acts like a render distance with a buffer of 1 tile in each direction to smooth camera rendering
+            if(location.getWorldX() + gp.tileSize> gp.player.location.getWorldX() - gp.player.screenX &&
+                    location.getWorldX() - gp.tileSize< gp.player.location.getWorldX() + gp.player.screenX &&
+                    location.getWorldY() + gp.tileSize> gp.player.location.getWorldY() - gp.player.screenY &&
+                    location.getWorldY() - gp.tileSize< gp.player.location.getWorldY() + gp.player.screenY) {
 
-            // Monster HP BAR Come up with a way to only display if they take damage or are near the player
-            if(type == 2 && hpBarOn){
-                double oneScale = (double)gp.tileSize/maxLife;
-                double hpBarValue = oneScale*life;
-
-                g2.setColor(new Color(35,35,35));
-                g2.drawRect(screenX-2,screenY-17, gp.tileSize+2, 12);
-
-                g2.setColor(new Color(255,0,30));
-                g2.fillRect(screenX,screenY - 15, (int)hpBarValue, 10);
-
-                hpBarCounter++;
-
-                if(hpBarCounter>=hpBarTimer){
-                    hpBarOn = false;
-                    hpBarCounter=0;
+                switch (direction) {
+                    case "up":
+                        if(spriteNum == 1)  {   image = up1;    }
+                        if(spriteNum == 2)  {   image = up2;    }
+                        break;
+                    case "down":
+                        if(spriteNum == 1)  {   image = down1;  }
+                        if(spriteNum == 2)  {   image = down2;  }
+                        break;
+                    case "left":
+                        if(spriteNum == 1)  {   image = left1;  }
+                        if(spriteNum == 2)  {   image = left2;  }
+                        break;
+                    case "right":
+                        if(spriteNum == 1)  {   image = right1; }
+                        if(spriteNum == 2)  {   image = right2; }
+                        break;
                 }
-            }
 
-            if(!hpBarOn && type == 2){
-                if(distanceFromPlayer(gp.tileSize*2)){
+                // Monster HP BAR Come up with a way to only display if they take damage or are near the player
+                if(type == 2 && hpBarOn){
+                    double oneScale = (double)gp.tileSize/maxLife;
+                    double hpBarValue = oneScale*life;
+
+                    g2.setColor(new Color(35,35,35));
+                    g2.drawRect(screenX-2,screenY-17, gp.tileSize+2, 12);
+
+                    g2.setColor(new Color(255,0,30));
+                    g2.fillRect(screenX,screenY - 15, (int)hpBarValue, 10);
+
+                    hpBarCounter++;
+
+                    if(hpBarCounter>=hpBarTimer){
+                        hpBarOn = false;
+                        hpBarCounter=0;
+                    }
+                }
+
+                if(!hpBarOn && type == 2){
+                    if(distanceFromPlayer(gp.tileSize*2)){
+                        hpBarOn = true;
+                    }
+                }
+
+                if(invincible){
                     hpBarOn = true;
+                    hpBarCounter = 0;
+                    changeAlpha(g2,0.4f);
                 }
+                if(dying){
+                    deathAnimation(g2);
+                }
+                g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+                changeAlpha(g2,1f);
             }
-
-            if(invincible){
-                hpBarOn = true;
-                hpBarCounter = 0;
-                changeAlpha(g2,0.4f);
-            }
-            if(dying){
-                deathAnimation(g2);
-            }
-            g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
-            changeAlpha(g2,1f);
         }
-
     }
 
     public boolean distanceFromPlayer(int amount){
         boolean isClose = false;
-        int xDistance = Math.abs(gp.player.worldX-worldX);
-        int yDistance = Math.abs(gp.player.worldY-worldY);
-        //-gets the greatest of the 2 numbers and returns it
-        int distance = Math.max(xDistance,yDistance);
-
+        int distance = gp.tool.distanceCalc(gp.player.location,location);
         //If they are closer than 2 tiles, return true
         if(distance <= amount){  isClose = true; }
         //Debug
@@ -266,6 +299,7 @@ public class Entity {
         if (deathCounter > deathFrames) {
             dying = false;
             alive = false;
+            markDone();
             changeAlpha(g2,1f);
         }
     }
@@ -295,20 +329,24 @@ public class Entity {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
     }
 
-    public BufferedImage setup(String imagePath, int width, int height){
 
-        UtilityTool uTool = new UtilityTool();
-        BufferedImage image = null;
-
-        try{
-            image = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
-            image = uTool.scaleImage(image, width, height);
-        }catch(IOException e){
-            e.printStackTrace();
+    //USED FOR OBJECT POOLING AND REUSING OBJECTS
+    public void markDone(){
+        isDone = true;
+        location.markDone();
+        if(currentShield!=null){
+            currentShield.markDone();
         }
-        return image;
+        if(currentWeapon != null){
+            currentWeapon.markDone();
+        }
+        //Mark spells as done
     }
 
-
+    //Adjust stats per mob
+    public void reUse(int x, int y){
+        requestTransform(x,y);
+        isDone = false;
+    }
 
 }

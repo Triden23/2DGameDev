@@ -25,7 +25,7 @@ public class AssetManager {
 
     public AssetManager(GamePanel gp){
         loadAssets(gp);
-        loadSceneAssets("All");
+        loadSceneAssets("All");//Tag used for persistant images for UI Elements or player sprites that are used in each scene
         switchScene("Basic");
     }
 
@@ -41,60 +41,54 @@ public class AssetManager {
         currentScene = scene;
     }
     public void loadSceneAssets(String scene) {
-        currentScene = scene;
+        switchScene(scene);
         for (Asset asset : assets.values()) {
-            if (asset.isUsedInScene(scene)) {
-                asset.getImage(); // Lazy loading applied
+            if (asset.isUsedInScene(scene)&&!asset.loaded) {
+                asset.initImage();
             }
         }
     }
     public void unloadSceneAssets(String scene) {
         for (Asset asset : assets.values()) {
-            if (asset.isUsedInScene(scene)||!asset.isUsedInScene("All")) {
+            if (asset.isUsedInScene(scene)&&!asset.isUsedInScene("All")) {
                 asset.clearImage(); // Free up memory
             }
         }
     }
     private void playerSprites(GamePanel gp){
         //Player Sprites
-        assets.put("PlayerUp1",new Asset("/player/boy_up_1",gp.tileSize, gp.tileSize, "All"));
-        assets.put("PlayerUp2",new Asset("/player/boy_up_2",gp.tileSize, gp.tileSize, "All"));
-        assets.put("PlayerDown1",new Asset("/player/boy_down_1",gp.tileSize, gp.tileSize, "All"));
-        assets.put("PlayerDown2",new Asset("/player/boy_down_2",gp.tileSize, gp.tileSize, "All"));
-        assets.put("PlayerLeft1",new Asset("/player/boy_left_1",gp.tileSize, gp.tileSize, "All"));
-        assets.put("PlayerLeft2",new Asset("/player/boy_left_2",gp.tileSize, gp.tileSize, "All"));
-        assets.put("PlayerRight1",new Asset("/player/boy_right_1",gp.tileSize, gp.tileSize, "All"));
-        assets.put("PlayerRight2",new Asset("/player/boy_right_2",gp.tileSize, gp.tileSize, "All"));
-        assets.put("PlayerAttackUp1",new Asset("/player/boy_attack_up_1",gp.tileSize,gp.tileSize*2, "All"));
-        assets.put("PlayerAttackUp2",new Asset("/player/boy_attack_up_2",gp.tileSize,gp.tileSize*2, "All"));
-        assets.put("PlayerAttackDown1",new Asset("/player/boy_attack_down_1",gp.tileSize,gp.tileSize*2, "All"));
-        assets.put("PlayerAttackDown2",new Asset("/player/boy_attack_Down_2",gp.tileSize,gp.tileSize*2, "All"));
-        assets.put("PlayerAttackLeft1",new Asset("/player/boy_attack_left_1",gp.tileSize*2,gp.tileSize, "All"));
-        assets.put("PlayerAttackLeft2",new Asset("/player/boy_attack_left_2",gp.tileSize*2,gp.tileSize, "All"));
-        assets.put("PlayerAttackRight1",new Asset("/player/boy_attack_right_1",gp.tileSize*2,gp.tileSize, "All"));
-        assets.put("PlayerAttackRight2",new Asset("/player/boy_attack_right_2",gp.tileSize*2,gp.tileSize, "All"));
+        assets.put("PlayerUp1"      ,new Asset("/player/boy_up_1",gp.tileSize, gp.tileSize, "All"));
+        assets.put("PlayerUp2"      ,new Asset("/player/boy_up_2",gp.tileSize, gp.tileSize, "All"));
+        assets.put("PlayerDown1"    ,new Asset("/player/boy_down_1",gp.tileSize, gp.tileSize, "All"));
+        assets.put("PlayerDown2"    ,new Asset("/player/boy_down_2",gp.tileSize, gp.tileSize, "All"));
+        assets.put("PlayerLeft1"    ,new Asset("/player/boy_left_1",gp.tileSize, gp.tileSize, "All"));
+        assets.put("PlayerLeft2"    ,new Asset("/player/boy_left_2",gp.tileSize, gp.tileSize, "All"));
+        assets.put("PlayerRight1"   ,new Asset("/player/boy_right_1",gp.tileSize, gp.tileSize, "All"));
+        assets.put("PlayerRight2"   ,new Asset("/player/boy_right_2",gp.tileSize, gp.tileSize, "All"));
+        assets.put("PlayerAttackUp1"    ,new Asset("/player/boy_attack_up_1",gp.tileSize,gp.tileSize*2, "All"));
+        assets.put("PlayerAttackUp2"    ,new Asset("/player/boy_attack_up_2",gp.tileSize,gp.tileSize*2, "All"));
+        assets.put("PlayerAttackDown1"  ,new Asset("/player/boy_attack_down_1",gp.tileSize,gp.tileSize*2, "All"));
+        assets.put("PlayerAttackDown2"  ,new Asset("/player/boy_attack_Down_2",gp.tileSize,gp.tileSize*2, "All"));
+        assets.put("PlayerAttackLeft1"  ,new Asset("/player/boy_attack_left_1",gp.tileSize*2,gp.tileSize, "All"));
+        assets.put("PlayerAttackLeft2"  ,new Asset("/player/boy_attack_left_2",gp.tileSize*2,gp.tileSize, "All"));
+        assets.put("PlayerAttackRight1" ,new Asset("/player/boy_attack_right_1",gp.tileSize*2,gp.tileSize, "All"));
+        assets.put("PlayerAttackRight2" ,new Asset("/player/boy_attack_right_2",gp.tileSize*2,gp.tileSize, "All"));
 
     }
     private void npcSprites(GamePanel gp){
         //Old wise wizard
-        assets.put("NPC_OldManUp1", new Asset("/npc/oldman_up_1",gp.tileSize, gp.tileSize,"Testing"));
-        assets.put("NPC_OldManUp2", new Asset("/npc/oldman_up_2",gp.tileSize, gp.tileSize,"Testing"));
-        assets.put("NPC_OldManDown1", new Asset("/npc/oldman_down_1",gp.tileSize, gp.tileSize,"Testing"));
-        assets.put("NPC_OldManDown2", new Asset("/npc/oldman_down_2",gp.tileSize, gp.tileSize,"Testing"));
-        assets.put("NPC_OldManLeft1", new Asset("/npc/oldman_left_1",gp.tileSize, gp.tileSize,"Testing"));
-        assets.put("NPC_OldManLeft2", new Asset("/npc/oldman_left_2",gp.tileSize, gp.tileSize,"Testing"));
-        assets.put("NPC_OldManRight1", new Asset("/npc/oldman_right_1",gp.tileSize, gp.tileSize,"Testing"));
-        assets.put("NPC_OldManRight2", new Asset("/npc/oldman_right_2",gp.tileSize, gp.tileSize,"Testing"));
+        assets.put("NPC_OldManUp1"      , new Asset("/npc/oldman_up_1",gp.tileSize, gp.tileSize,"All"));
+        assets.put("NPC_OldManUp2"      , new Asset("/npc/oldman_up_2",gp.tileSize, gp.tileSize,"All"));
+        assets.put("NPC_OldManDown1"    , new Asset("/npc/oldman_down_1",gp.tileSize, gp.tileSize,"All"));
+        assets.put("NPC_OldManDown2"    , new Asset("/npc/oldman_down_2",gp.tileSize, gp.tileSize,"All"));
+        assets.put("NPC_OldManLeft1"    , new Asset("/npc/oldman_left_1",gp.tileSize, gp.tileSize,"All"));
+        assets.put("NPC_OldManLeft2"    , new Asset("/npc/oldman_left_2",gp.tileSize, gp.tileSize,"All"));
+        assets.put("NPC_OldManRight1"   , new Asset("/npc/oldman_right_1",gp.tileSize, gp.tileSize,"All"));
+        assets.put("NPC_OldManRight2"   , new Asset("/npc/oldman_right_2",gp.tileSize, gp.tileSize,"All"));
     }
     private void monsterSprites(GamePanel gp){
         assets.put("MON_BlueSlimeUp1", new Asset("/monster/blueslime_down_1",gp.tileSize, gp.tileSize,"All"));
         assets.put("MON_BlueSlimeUp2", new Asset("/monster/blueslime_down_2",gp.tileSize, gp.tileSize,"All"));
-        assets.put("MON_BlueSlimeDown1", new Asset("/monster/blueslime_down_1",gp.tileSize, gp.tileSize,"All"));
-        assets.put("MON_BlueSlimeDown2", new Asset("/monster/blueslime_down_2",gp.tileSize, gp.tileSize,"All"));
-        assets.put("MON_BlueSlimeLeft1", new Asset("/monster/blueslime_down_1",gp.tileSize, gp.tileSize,"All"));
-        assets.put("MON_BlueSlimeLeft2", new Asset("/monster/blueslime_down_2",gp.tileSize, gp.tileSize,"All"));
-        assets.put("MON_BlueSlimeRight1", new Asset("/monster/blueslime_down_1",gp.tileSize, gp.tileSize,"All"));
-        assets.put("MON_BlueSlimeRight2", new Asset("/monster/blueslime_down_2",gp.tileSize, gp.tileSize,"All"));
     }
     private void objectSprites(GamePanel gp){
         assets.put("OBJ_Boots", new Asset("/objects/boots",gp.tileSize, gp.tileSize,"All"));
@@ -125,9 +119,15 @@ public class AssetManager {
             return resizedCache.get(key);
         }
 
+        //Handle non existent assets
         Asset asset = assets.get(tag);
-        if (asset == null) {
-            return null; // Handle missing assets
+        if (asset == null || asset.getImage() == null) {
+            return null; // Handle missing assets safely
+        }
+
+        // If requested size matches the original, return it directly
+        if (asset.width == width && asset.height == height) {
+            return asset.getImage();
         }
 
         // Resize and cache it
@@ -135,8 +135,12 @@ public class AssetManager {
         resizedCache.put(key, resized);
         return resized;
     }
+
+    //Scale image to desired size in pixels
     private BufferedImage scaleImage(BufferedImage original, int width, int height) {
-        BufferedImage scaledImage = new BufferedImage(width, height, original.getType());
+        if (original == null) return null; // Prevent NullPointerException
+        int imageType = (original.getType() == 0) ? BufferedImage.TYPE_INT_ARGB : original.getType();
+        BufferedImage scaledImage = new BufferedImage(width, height, imageType);
         Graphics2D g2 = scaledImage.createGraphics();
         g2.drawImage(original, 0, 0, width, height, null); // No rendering hint for speed
         g2.dispose();
@@ -149,4 +153,7 @@ public class AssetManager {
         resizedCache.clear(); // Clears the cache when memory needs to be freed
     }
 
+    public String getScene(){
+        return currentScene;
+    }
 }

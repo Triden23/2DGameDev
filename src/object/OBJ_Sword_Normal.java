@@ -9,8 +9,12 @@ public class OBJ_Sword_Normal extends Entity{
         super(gp);
 
         name = "Normal Sword";
-        down1 = setup("/objects/Sword", gp.tileSize,gp.tileSize);
+        down1 = gp.assetM.getAsset("OBJ_Sword");
         attackValue = 1;
         description = "A really rusty sword";
+    }
+
+    public void markDone(){
+        isDone = true;
     }
 }

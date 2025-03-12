@@ -14,7 +14,7 @@ public class OBJ_Door extends Entity {
 
         super(gp);
         name = "Door";
-        down1 = setup("/objects/door",gp.tileSize, gp.tileSize);
+        down1 = gp.assetM.getAsset("OBJ_Door");
         collision = true;
 
         solidArea.x = 0;
@@ -25,5 +25,8 @@ public class OBJ_Door extends Entity {
         solidAreaDefaultY = solidArea.y;
     }
 
+    public void markDone(){
+        isDone = true;
+    }
 
 }

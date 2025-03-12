@@ -8,8 +8,12 @@ public class OBJ_Shield_Wood extends Entity {
         super(gp);
 
         name = "Wooden Shield";
-        down1 = setup("/objects/shield",gp.tileSize,gp.tileSize);
+        down1 = gp.assetM.getAsset("OBJ_Shield");
         defenseValue = 1;
         description = "A wooden shield, it may protect you";
+    }
+
+    public void markDone(){
+        isDone = true;
     }
 }

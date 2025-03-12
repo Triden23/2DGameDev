@@ -1,10 +1,13 @@
 package main;
 
+import Assets.AssetManager;
 import Magic.Coord;
 import Magic.SpellManager;
 import entity.Entity;
 import entity.Player;
 import tile.TileManager;
+import tools.Utility;
+import Assets.ObjectPool;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,9 +37,12 @@ public class GamePanel extends JPanel implements Runnable{
     public final int fps = 60;
 
     // SYSTEM
+    public Utility tool = new Utility();
     TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler(this);
     public SpellManager spellM = new SpellManager(this);
+    public AssetManager assetM = new AssetManager(this);
+    public ObjectPool objectP = new ObjectPool(this);
 
     Sound music = new Sound();
     Sound se = new Sound();
@@ -69,6 +75,9 @@ public class GamePanel extends JPanel implements Runnable{
     public final int pauseState = 2;
     public final int dialogState = 3;
     public final int characterState = 4;
+
+    public String scene = "Basic";
+    public String previousScene;
 
 
     public GamePanel(){
@@ -132,6 +141,16 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void update(){
+        if(!Objects.equals(scene, assetM.getScene())){
+            if(scene!=null){
+                previousScene = scene;
+            }
+            scene = assetM.getScene();
+            if(previousScene!=null){
+                assetM.unloadSceneAssets(previousScene);
+            }
+            assetM.loadSceneAssets(scene);
+        }
         //UPDATE LAYERS -> PLAYER -> ENTITIES -> Projectiles
         if(gameState == playState){
             // Player

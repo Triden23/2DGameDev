@@ -2,7 +2,6 @@ package Magic;
 
 import entity.Entity;
 import main.GamePanel;
-import main.UtilityTool;
 import tools.Circle;
 
 import java.awt.*;
@@ -26,9 +25,6 @@ public class Spell {
 
     //Array list used to track what entities its hit by tag so it does not hit them again
     ArrayList<String> hittags;
-
-    //UTILITY OBJECT
-    UtilityTool uTool;
 
     //LOCATION OBJECT
     public Coord coord; //Stores the spells x,y and if its a projectile its targetX and its targetY
@@ -93,7 +89,6 @@ public class Spell {
         this.name = name;
         this.caster = caster;
         hittags = new ArrayList<>();
-        uTool = new UtilityTool();
         coord = new Coord(caster.worldX,caster.worldY,caster.worldX,caster.worldY);//Default value will be adjusted
         setVariables();
         updateStats();

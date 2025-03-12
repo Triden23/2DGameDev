@@ -25,44 +25,51 @@ public class AssetSetter {
     public void setNPC(){
 
         gp.npc[0] = new NPC_Oldman(gp);
-        gp.npc[0].worldX = gp.tileSize*8;
-        gp.npc[0].worldY = gp.tileSize*7;
+        gp.npc[0].requestTransform(gp.tileSize*8,gp.tileSize*7);
+        gp.npc[0].tag = gp.npc[0].name + "0";
 
     }
 
     public void setMonster(){
+        int x,y;
         Random random = new Random();
         int i = 0;
 
         gp.monster[i] = new MON_BlueSlime(gp);
-        gp.monster[i].worldX = gp.tileSize*8;
-        gp.monster[i].worldY = gp.tileSize*8;
+        x = gp.tileSize*8;
+        y = gp.tileSize*8;
+        gp.monster[i].requestTransform(x,y);
         gp.monster[i].tag =gp.monster[i].name + "_" + i;
         i++;
         gp.monster[i] = new MON_BlueSlime(gp);
-        gp.monster[i].worldX = gp.tileSize*8;
-        gp.monster[i].worldY = gp.tileSize*9;
+        x = gp.tileSize*8;
+        y = gp.tileSize*9;
+        gp.monster[i].requestTransform(x,y);
         gp.monster[i].tag =gp.monster[i].name + "_" + i;
 
         i++;
         gp.monster[i] = new MON_BlueSlime(gp);
-        gp.monster[i].worldX = gp.tileSize*8;
-        gp.monster[i].worldY = gp.tileSize*10;
+        x = gp.tileSize*8;
+        y = gp.tileSize*10;
+        gp.monster[i].requestTransform(x,y);
         gp.monster[i].tag =gp.monster[i].name + "_" + i;
         i++;
         gp.monster[i] = new MON_BlueSlime(gp);
-        gp.monster[i].worldX = gp.tileSize*9;
-        gp.monster[i].worldY = gp.tileSize*8;
+        x = gp.tileSize*9;
+        y = gp.tileSize*8;
+        gp.monster[i].requestTransform(x,y);
         gp.monster[i].tag =gp.monster[i].name + "_" + i;
         i++;
         gp.monster[i] = new MON_BlueSlime(gp);
-        gp.monster[i].worldX = gp.tileSize*9;
-        gp.monster[i].worldY = gp.tileSize*9;
+        x = gp.tileSize*9;
+        y = gp.tileSize*9;
+        gp.monster[i].requestTransform(x,y);
         gp.monster[i].tag =gp.monster[i].name + "_" + i;
         i++;
         gp.monster[i] = new MON_BlueSlime(gp);
-        gp.monster[i].worldX = gp.tileSize*9;
-        gp.monster[i].worldY = gp.tileSize*10;
+        x = gp.tileSize*9;
+        y = gp.tileSize*10;
+        gp.monster[i].requestTransform(x,y);
         gp.monster[i].tag =gp.monster[i].name + "_" + i;
         i++;
 

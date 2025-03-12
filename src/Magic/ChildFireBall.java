@@ -51,11 +51,11 @@ public class ChildFireBall extends Spell{
         effectSprite = new BufferedImage[2];
 
         System.out.println(baseStats.projectileSizeX);
-        projectileSprite[0] = uTool.setup("/attacks/flamecircle_1",baseStats.projectileSizeX,baseStats.projectileSizeY);
-        projectileSprite[1] = uTool.setup("/attacks/flamecircle_2",baseStats.projectileSizeX,baseStats.projectileSizeY);
+        projectileSprite[0] = gp.assetM.resizeAndGetAsset("SPE_PRO_FireBall1",baseStats.projectileSizeX,baseStats.projectileSizeY);
+        projectileSprite[1] = gp.assetM.resizeAndGetAsset("SPE_PRO_FireBall2",baseStats.projectileSizeX,baseStats.projectileSizeY);
 
-        effectSprite[0] = uTool.setup("/attacks/flamecircle_4",baseStats.effectSizeX,baseStats.effectSizeY);
-        effectSprite[1] = uTool.setup("/attacks/flameCircle_5",baseStats.effectSizeX,baseStats.effectSizeY);
+        effectSprite[0] = gp.assetM.resizeAndGetAsset("SPE_EFF_FireBall1",baseStats.effectSizeX,baseStats.effectSizeY);
+        effectSprite[1] = gp.assetM.resizeAndGetAsset("SPE_EFF_FireBall2",baseStats.effectSizeX,baseStats.effectSizeY);
     }
 
     public void projectileLogic(){

@@ -38,16 +38,15 @@ public class NPC_Oldman extends Entity{
     }
 
     public void getImage() {
-
-        up1 = setup("/npc/oldman_up_1",gp.tileSize, gp.tileSize);
-        up2 = setup("/npc/oldman_up_2",gp.tileSize, gp.tileSize);
-        down1 = setup("/npc/oldman_down_1",gp.tileSize, gp.tileSize);
-        down2 = setup("/npc/oldman_down_2",gp.tileSize, gp.tileSize);
-        left1 = setup("/npc/oldman_left_1",gp.tileSize, gp.tileSize);
-        left2 = setup("/npc/oldman_left_2",gp.tileSize, gp.tileSize);
-        right1 = setup("/npc/oldman_right_1",gp.tileSize, gp.tileSize);
-        right2 = setup("/npc/oldman_right_2",gp.tileSize, gp.tileSize);
-
+        System.out.println("Old man is loading");
+        up1 =   gp.assetM.getAsset("NPC_OldManUp1");
+        up2 =   gp.assetM.getAsset("NPC_OldManUp2");
+        down1 = gp.assetM.getAsset("NPC_OldManDown1");
+        down2 = gp.assetM.getAsset("NPC_OldManDown2");
+        left1 = gp.assetM.getAsset("NPC_OldManLeft1");
+        left2 = gp.assetM.getAsset("NPC_OldManLeft2");
+        right1 =gp.assetM.getAsset("NPC_OldManRight1");
+        right2 =gp.assetM.getAsset("NPC_OldManRight2");
     }
 
     public void setDialog(){
