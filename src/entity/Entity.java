@@ -1,7 +1,6 @@
 package entity;
 
 import Assets.TagTracker;
-import Magic.Enhancements;
 import Navigation.PathFinding;
 import main.GamePanel;
 import tools.Transform;
@@ -63,7 +62,7 @@ public class Entity {
     public int exp;
     public int nextLevelExp;
     public int coin;
-    public Enhancements enhancements = new Enhancements();
+
     public Entity currentWeapon;
     public Entity currentShield;
     public List<CooldownData> newSpells = new ArrayList<>();

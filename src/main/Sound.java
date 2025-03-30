@@ -4,12 +4,11 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.net.URL;
-import java.security.spec.ECField;
 
 public class Sound {
 
     Clip clip;
-    URL soundURL[] = new URL[30];
+    URL[] soundURL = new URL[30];
 
     public Sound() {
         soundURL[0] = getClass().getResource("/sound/Adventure.wav");
@@ -23,6 +22,7 @@ public class Sound {
         soundURL[8] = getClass().getResource("/sound/levelup.wav");
         soundURL[9] = getClass().getResource("/sound/cursor.wav");
     }
+
     public void setFile(int i) {
         try {
 
@@ -30,21 +30,24 @@ public class Sound {
             clip = AudioSystem.getClip();
             clip.open(ais);
 
-        }catch(Exception e){
+        } catch (Exception e) {
 
         }
     }
+
     public void play() {
 
         clip.start();
 
     }
-    public void loop(){
+
+    public void loop() {
 
         clip.loop(Clip.LOOP_CONTINUOUSLY);
 
     }
-    public void stop(){
+
+    public void stop() {
 
         clip.stop();
 
