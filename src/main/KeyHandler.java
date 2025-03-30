@@ -5,14 +5,13 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
 
-    GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
-
     public boolean spellOnePressed, spellTwoPressed;
-
     // DEBUG
     public boolean showDebugText = false;
-    public KeyHandler(GamePanel gp){
+    GamePanel gp;
+
+    public KeyHandler(GamePanel gp) {
         this.gp = gp;
     }
 
@@ -26,202 +25,200 @@ public class KeyHandler implements KeyListener {
         int code = e.getKeyCode();
 
         //Title State
-        if(gp.gameState == gp.titleState){
+        if (gp.gameState == gp.titleState) {
             titleState(code);
         }
         //Play State
-        else if(gp.gameState == gp.playState){
+        else if (gp.gameState == gp.playState) {
             playState(code);
         }
         //PAUSE STATE
-        else if(gp.gameState == gp.pauseState){
+        else if (gp.gameState == gp.pauseState) {
             pauseState(code);
         }
         //DIALOG STATE
-        else if(gp.gameState == gp.dialogState){
+        else if (gp.gameState == gp.dialogState) {
             dialogState(code);
         }
         //CHARACTER STATE
-        else if(gp.gameState == gp.characterState){
+        else if (gp.gameState == gp.characterState) {
             characterState(code);
         }
 
 
     }
 
-    public void titleState(int code){
+    public void titleState(int code) {
 
-        if(gp.ui.titleScreenState == 0){
+        if (gp.ui.titleScreenState == 0) {
             mainMenu(code);
-        }
-        else if(gp.ui.titleScreenState == 1){
+        } else if (gp.ui.titleScreenState == 1) {
             characterSelect(code);
-        }
-        else if(gp.ui.titleScreenState == 2) {
+        } else if (gp.ui.titleScreenState == 2) {
             confirmCharacterSelect(code);
         }
 
     }
 
-    public void playState(int code){
-        if(code == KeyEvent.VK_W){
+    public void playState(int code) {
+        if (code == KeyEvent.VK_W) {
             upPressed = true;
         }
-        if(code == KeyEvent.VK_S){
+        if (code == KeyEvent.VK_S) {
             downPressed = true;
         }
-        if(code == KeyEvent.VK_A){
+        if (code == KeyEvent.VK_A) {
             leftPressed = true;
         }
-        if(code == KeyEvent.VK_D){
+        if (code == KeyEvent.VK_D) {
             rightPressed = true;
         }
-        if(code == KeyEvent.VK_ESCAPE){
+        if (code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.pauseState;
         }
-        if(code == KeyEvent.VK_C){
+        if (code == KeyEvent.VK_C) {
             gp.gameState = gp.characterState;
         }
-        if(code == KeyEvent.VK_ENTER){
+        if (code == KeyEvent.VK_ENTER) {
             enterPressed = true;
         }
-        if(code == KeyEvent.VK_Q){
+        if (code == KeyEvent.VK_Q) {
             spellOnePressed = true;
         }
-        if(code == KeyEvent.VK_E){
+        if (code == KeyEvent.VK_E) {
             spellTwoPressed = true;
         }
 
         // DEBUG
-        if(code == KeyEvent.VK_T){
-            if(!showDebugText){
+        if (code == KeyEvent.VK_T) {
+            if (!showDebugText) {
                 showDebugText = true;
-            }else{
-                if(showDebugText){
+            } else {
+                if (showDebugText) {
                     showDebugText = false;
                 }
             }
         }
 
-        if(code == KeyEvent.VK_R){
+        if (code == KeyEvent.VK_R) {
             String debug_Map = "/maps/world01.txt";
             gp.tileM.loadMap(debug_Map);
         }
     }
 
-    public void pauseState(int code){
-        if(code == KeyEvent.VK_ESCAPE){
+    public void pauseState(int code) {
+        if (code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.playState;
         }
     }
 
-    public void dialogState(int code){
-        if(code == KeyEvent.VK_ENTER){
+    public void dialogState(int code) {
+        if (code == KeyEvent.VK_ENTER) {
             gp.gameState = gp.playState;
         }
     }
 
-    public void characterState(int code){
-        if(code == KeyEvent.VK_C){
+    public void characterState(int code) {
+        if (code == KeyEvent.VK_C) {
             gp.gameState = gp.playState;
         }
-        if(code == KeyEvent.VK_W){
+        if (code == KeyEvent.VK_W) {
             gp.ui.slotRow--;
             gp.playSE(9);
-            if(gp.ui.slotRowMin>gp.ui.slotRow){
+            if (gp.ui.slotRowMin > gp.ui.slotRow) {
                 gp.ui.slotRow = gp.ui.slotRowMax;
             }
             gp.ui.showItem = false;
         }
-        if(code == KeyEvent.VK_A){
+        if (code == KeyEvent.VK_A) {
             gp.ui.slotCol--;
             gp.playSE(9);
-            if(gp.ui.slotColMin>gp.ui.slotCol){
+            if (gp.ui.slotColMin > gp.ui.slotCol) {
                 gp.ui.slotCol = gp.ui.slotColMax;
             }
             gp.ui.showItem = false;
         }
-        if(code == KeyEvent.VK_S){
+        if (code == KeyEvent.VK_S) {
             gp.ui.slotRow++;
             gp.playSE(9);
-            if(gp.ui.slotRow > gp.ui.slotRowMax){
+            if (gp.ui.slotRow > gp.ui.slotRowMax) {
                 gp.ui.slotRow = gp.ui.slotRowMin;
             }
             gp.ui.showItem = false;
         }
-        if(code == KeyEvent.VK_D){
+        if (code == KeyEvent.VK_D) {
             gp.ui.slotCol++;
             gp.playSE(9);
-            if(gp.ui.slotCol > gp.ui.slotColMax){
+            if (gp.ui.slotCol > gp.ui.slotColMax) {
                 gp.ui.slotCol = gp.ui.slotColMin;
             }
             gp.ui.showItem = false;
         }
-        if(code == KeyEvent.VK_ENTER){
+        if (code == KeyEvent.VK_ENTER) {
             gp.ui.showItem = true;
         }
     }
 
-    public void mainMenu(int code){
-        gp.ui.commandMax=2;
+    public void mainMenu(int code) {
+        gp.ui.commandMax = 2;
 
-        if(code == KeyEvent.VK_W){
-            if(gp.ui.commandNum > gp.ui.commandMin) {
+        if (code == KeyEvent.VK_W) {
+            if (gp.ui.commandNum > gp.ui.commandMin) {
                 gp.ui.commandNum--;
-            }else{
+            } else {
                 gp.ui.commandNum = gp.ui.commandMax;
             }
         }
-        if(code == KeyEvent.VK_S){
-            if(gp.ui.commandNum < gp.ui.commandMax) {
+        if (code == KeyEvent.VK_S) {
+            if (gp.ui.commandNum < gp.ui.commandMax) {
                 gp.ui.commandNum++;
-            }else{
+            } else {
                 gp.ui.commandNum = gp.ui.commandMin;
             }
         }
-        if(code == KeyEvent.VK_ENTER){
+        if (code == KeyEvent.VK_ENTER) {
 
             //New game
-            if(gp.ui.commandNum == 0){
+            if (gp.ui.commandNum == 0) {
                 gp.ui.titleScreenState = 1;
                 gp.playMusic(0);
             }
 
             //Load game
-            if(gp.ui.commandNum == 1){
+            if (gp.ui.commandNum == 1) {
                 //Add later
             }
 
             //Quit game
-            if(gp.ui.commandNum == 2){
+            if (gp.ui.commandNum == 2) {
                 System.exit(0);
             }
 
         }
     }
 
-    public void characterSelect(int code){
+    public void characterSelect(int code) {
         //Change this to be the max amount of menu options
         gp.ui.commandMax = 4;
         //Do things for a sub menu or something. maybe character creation
-        if(code == KeyEvent.VK_W){
-            if(gp.ui.commandNum > gp.ui.commandMin) {
+        if (code == KeyEvent.VK_W) {
+            if (gp.ui.commandNum > gp.ui.commandMin) {
                 gp.ui.commandNum--;
-            }else{
+            } else {
                 //Loops the selection around
                 gp.ui.commandNum = gp.ui.commandMax;
             }
         }
-        if(code == KeyEvent.VK_S){
+        if (code == KeyEvent.VK_S) {
 
-            if(gp.ui.commandNum < gp.ui.commandMax) {
+            if (gp.ui.commandNum < gp.ui.commandMax) {
                 gp.ui.commandNum++;
-            }else{
+            } else {
                 //loops the selection around
                 gp.ui.commandNum = gp.ui.commandMin;
             }
         }
-        if(code == KeyEvent.VK_ENTER) {
+        if (code == KeyEvent.VK_ENTER) {
 
             //Fighter
             if (gp.ui.commandNum == 0) {
@@ -259,7 +256,7 @@ public class KeyHandler implements KeyListener {
             }
 
             //Back
-            if(gp.ui.commandNum == 4){
+            if (gp.ui.commandNum == 4) {
                 //Returns you to the previous menu
                 gp.ui.titleScreenState = 0;
                 gp.ui.commandNum = 0;
@@ -267,7 +264,7 @@ public class KeyHandler implements KeyListener {
         }
     }
 
-    public void confirmCharacterSelect(int code){
+    public void confirmCharacterSelect(int code) {
         //Change this to be the max amount of menu options
         gp.ui.commandMax = 1;
         //Do things for a sub menu or something. maybe character creation
@@ -309,21 +306,20 @@ public class KeyHandler implements KeyListener {
 
         int code = e.getKeyCode();
 
-        if(code == KeyEvent.VK_W){
+        if (code == KeyEvent.VK_W) {
             upPressed = false;
         }
-        if(code == KeyEvent.VK_S){
+        if (code == KeyEvent.VK_S) {
             downPressed = false;
         }
-        if(code == KeyEvent.VK_A){
+        if (code == KeyEvent.VK_A) {
             leftPressed = false;
         }
-        if(code == KeyEvent.VK_D){
+        if (code == KeyEvent.VK_D) {
             rightPressed = false;
         }
 
     }
-
 
 
 }
