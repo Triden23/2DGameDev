@@ -10,13 +10,13 @@ import java.util.Set;
 
 public class Asset {
 
-    String path;
-    int width,height;
-    BufferedImage image;
     private final Set<String> scene = new HashSet<>();
+    String path;
+    int width, height;
+    BufferedImage image;
     Boolean loaded = false;
 
-    public Asset(String path, int width, int height, String... scene){
+    public Asset(String path, int width, int height, String... scene) {
 
         this.path = path;
         this.width = width;
@@ -24,12 +24,13 @@ public class Asset {
         this.scene.addAll(Arrays.asList(scene));
 
     }
-    public void initImage(){
-        try{
+
+    public void initImage() {
+        try {
             image = ImageIO.read(getClass().getResourceAsStream(path + ".png"));
             image = scaleImage(image, width, height);
             loaded = true;
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -39,37 +40,38 @@ public class Asset {
         loaded = false;
     }
 
-    public BufferedImage scaleImage(BufferedImage original, int width, int height){
+    public BufferedImage scaleImage(BufferedImage original, int width, int height) {
         BufferedImage scaledImage = new BufferedImage(width, height, original.getType());
         Graphics2D g2 = scaledImage.createGraphics();
-        g2.drawImage(original, 0, 0, width, height,null);
+        g2.drawImage(original, 0, 0, width, height, null);
         g2.dispose();
 
         return scaledImage;
     }
 
-    public BufferedImage getImage(){
+    public BufferedImage getImage() {
         return image;
     }
 
-    public BufferedImage getAndResize(int width,int height){
+    public BufferedImage getAndResize(int width, int height) {
         BufferedImage scaledImage = new BufferedImage(width, height, image.getType());
         Graphics2D g2 = scaledImage.createGraphics();
-        g2.drawImage(image, 0, 0, width, height,null);
+        g2.drawImage(image, 0, 0, width, height, null);
         g2.dispose();
         return scaledImage;
     }
 
     //Used in things like spells that can be equiped or unequiped
-    public void addScene(String scene){
+    public void addScene(String scene) {
         this.scene.add(scene);
     }
+
     //Used in spells, that can be equiped and unequiped
-    public void removeScene(String scene){
+    public void removeScene(String scene) {
         this.scene.remove(scene);
     }
 
-    public boolean isUsedInScene(String scene){
+    public boolean isUsedInScene(String scene) {
         return this.scene.contains(scene);
     }
 

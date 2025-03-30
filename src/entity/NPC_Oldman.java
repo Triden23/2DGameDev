@@ -1,20 +1,24 @@
 package entity;
 
+import Assets.TagTracker;
 import main.GamePanel;
+
 import java.awt.*;
 import java.util.Random;
 
 
-public class NPC_Oldman extends Entity{
+public class NPC_Oldman extends Entity {
     /*
     Aaron suggestion, talk to him 50 times, get the spell tornado. I dont give a fuck if I have spells Im adding this.
      */
 
 
     private boolean tornadoMode; // easter egg boolean
-    public NPC_Oldman(GamePanel gp){
-        super(gp);
 
+    public NPC_Oldman(GamePanel gp) {
+        super(gp);
+        tag = "NPC_Oldman";
+        tagTracker = TagTracker.NPC_OldMan;
         direction = "down";
         speed = 1;
         tornadoMode = false;
@@ -39,17 +43,17 @@ public class NPC_Oldman extends Entity{
 
     public void getImage() {
         System.out.println("Old man is loading");
-        up1 =   gp.assetM.getAsset("NPC_OldManUp1");
-        up2 =   gp.assetM.getAsset("NPC_OldManUp2");
+        up1 = gp.assetM.getAsset("NPC_OldManUp1");
+        up2 = gp.assetM.getAsset("NPC_OldManUp2");
         down1 = gp.assetM.getAsset("NPC_OldManDown1");
         down2 = gp.assetM.getAsset("NPC_OldManDown2");
         left1 = gp.assetM.getAsset("NPC_OldManLeft1");
         left2 = gp.assetM.getAsset("NPC_OldManLeft2");
-        right1 =gp.assetM.getAsset("NPC_OldManRight1");
-        right2 =gp.assetM.getAsset("NPC_OldManRight2");
+        right1 = gp.assetM.getAsset("NPC_OldManRight1");
+        right2 = gp.assetM.getAsset("NPC_OldManRight2");
     }
 
-    public void setDialog(){
+    public void setDialog() {
 
         dialogues[0] = "Hi billy";
         dialogues[1] = "That candy on the fridge \nyou left tasted wierd";
@@ -58,24 +62,24 @@ public class NPC_Oldman extends Entity{
 
     }
 
-    public void setAction(){
+    public void setAction() {
 
         actionLockCounter++;
 
-        if(actionLockCounter == actionLockFrames||tornadoMode){
+        if (actionLockCounter == actionLockFrames || tornadoMode) {
 
             Random random = new Random();
-            int i = random.nextInt(100)+1; // picks a number form 1 - 100
-            if(i <= 25){
+            int i = random.nextInt(100) + 1; // picks a number form 1 - 100
+            if (i <= 25) {
                 direction = "up";
             }
-            if(i > 25 && i <= 50){
+            if (i > 25 && i <= 50) {
                 direction = "down";
             }
-            if(i > 50 && i <= 75){
+            if (i > 50 && i <= 75) {
                 direction = "left";
             }
-            if(i > 75 && i <= 100){
+            if (i > 75 && i <= 100) {
                 direction = "right";
             }
 
@@ -88,18 +92,18 @@ public class NPC_Oldman extends Entity{
 
     public void speak() {
 
-        if(dialogues[dialogIndex] == null){
+        if (dialogues[dialogIndex] == null) {
             dialogIndex = 0;
             tornadoMode = false;
         }
         gp.ui.currentDialog = dialogues[dialogIndex];
         dialogIndex++;
         System.out.println("Dialog Counter: " + dialogIndex);
-        if(dialogIndex == 3){
+        if (dialogIndex == 3) {
             tornadoMode = true;
         }
 
-        switch(gp.player.direction){
+        switch (gp.player.direction) {
             case "up":
                 direction = "down";
                 break;
