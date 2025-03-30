@@ -20,8 +20,6 @@ public class Enhancements {
     public float rangeBuff = 0.0f;// increases travel distance
 
 
-
-
     // Projectile-Based Enhancements
     public float projectileSpeedBuff = 0.0f; // How much faster a spell travels %
 
@@ -69,10 +67,9 @@ public class Enhancements {
 
     public float percentOfStat = 0;
     public int baseDamage = 0;
-    String scalingType = "";
-
     public int projectileSizeX = 0;
     public int projectileSizeY = 0;
     public int effectSizeX = 0;
     public int effectSizeY = 0;
+    String scalingType = "";
 }
