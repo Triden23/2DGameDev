@@ -1,3 +1,3 @@
-making a 2D game in java
+Project is now shelved and is begining a port over to python
 
-Any advice ill take
+This will remain up
